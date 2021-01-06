@@ -1,11 +1,29 @@
 {
   "name": "my-three",
   "version": "1.0.0",
-  "description": "",
   "main": "orbitControls.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iChard/my-three.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iChard/my-three/issues"
+  },
+  "homepage": "https://github.com/iChard/my-three#readme",
+  "description": "",
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "three": "^0.124.0"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.1"
+  }
 }

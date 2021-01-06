@@ -3,21 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>第一个three.js文件_WebGL三维场景</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            /* 隐藏body窗口区域滚动条 */
-        }
-    </style>
-    <!--引入three.js三维引擎-->
-    <!-- <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/build/three.js"></script> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <script src="http://www.yanhuangxueyuan.com/threejs/build/three.js"></script>
-    <!-- <script src="./three.min.js"></script> -->
     <script src="http://www.yanhuangxueyuan.com/threejs/examples/js/controls/OrbitControls.js"></script>
-    <!-- <script src="./three.js"></script> -->
-    <!-- <script src="http://www.yanhuangxueyuan.com/threejs/build/three.js"></script> -->
 </head>
 
 <body>
@@ -26,47 +15,56 @@
          * 创建场景对象Scene
          */
         var scene = new THREE.Scene();
-        /**
-         * 创建网格模型
-         */
-        // var geometry = new THREE.SphereGeometry(60, 40, 40); //创建一个球体几何对象
-        var box = new THREE.BoxGeometry(90, 90, 90); //创建一个立方体几何对象Geometry
 
-        var material = new THREE.MeshLambertMaterial({
-            color: 0xff00ff,
-            wireframe: true
-        }); //材质对象Material
-        var mesh = new THREE.Mesh(box, material); //网格模型对象Mesh
+        var geometry = new THREE.BufferGeometry(); //创建一个Buffer类型几何体对象
+        //类型数组创建顶点数据
+        var vertices = new Float32Array([
+            0, 0, 0, //顶点1坐标
+            80, 0, 0, //顶点2坐标
+            80, 80, 0, //顶点3坐标
 
+            0, 0, 0, //顶点4坐标   和顶点1位置相同
+            80, 80, 0, //顶点5坐标  和顶点3位置相同
+            0, 80, 0, //顶点6坐标
+        ]);
 
-        var sphere = new THREE.SphereGeometry(30, 30, 30);// 创建一个球体
-        var materialSphere = new THREE.MeshLambertMaterial({// 球体材质对象
-            color: 0x0000ff,
-            opacity: 0.7,
-            transparent: false,
-            wireframe: true,
-        })
-        var materialSpherePhong = new THREE.MeshPhongMaterial({
-            specular: 0xff0000,
-            shininess: 10
-        })
-        var meshSphere = new THREE.Mesh(sphere, materialSphere); //球体网格模型对象Mesh
-        meshSphere.translateY(100)
+        var normals = new Float32Array([
+            0, 0, 1, //顶点1法向量
+            0, 0, 1, //顶点2法向量
+            0, 0, 1, //顶点3法向量
 
+            0, 0, 1, //顶点4法向量
+            0, 0, 1, //顶点5法向量
+            0, 0, 1, //顶点6法向量
+        ]);
         
-        var cylinder = new THREE.CylinderGeometry(50, 50, 60, 20)// 圆柱体
-        var materialCylinder = new THREE.MeshLambertMaterial({
-            color: 0xffff00,
-            wireframe: true
+        // 创建几何体位置属性
+        geometry.attributes.position = new THREE.BufferAttribute(vertices, 3);;
+        // 设置集合体法向量属性
+        geometry.attributes.normal = new THREE.BufferAttribute(normals, 3); //3个为一组,表示一个顶点的xyz坐标
+        // 三角面(网格)渲染模式
+        var material = new THREE.MeshBasicMaterial({
+            color: 0x0000ff, //三角面颜色
+            side: THREE.DoubleSide,  //两面可见,
+            // vertexColors: THREE.VertexColors
+        }); //材质对象
+
+        var mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
+        // 点渲染模式
+        var materialPoint = new THREE.PointsMaterial({
+            // color: 0xff0000,
+            size: 10.0,
+            vertexColors: THREE.VertexColors
+        });
+        var point = new THREE.Points(geometry, materialPoint)
+
+        var materialLine = new THREE.LineBasicMaterial({
+            color: 0xff0000
         })
-        var meshCylinder = new THREE.Mesh(cylinder, materialCylinder)
-        meshCylinder.translateY(-100)
+        var line = new THREE.Line(geometry, materialLine)
         scene.add(mesh); //网格模型添加到场景中
-        scene.add(meshSphere);
-        scene.add(meshCylinder)
-        /**
-         * 光源设置
-         */
+
+
         //点光源
         var point1 = new THREE.PointLight(0xffffff);
         point1.position.set(32, 100, 0); //点光源位置x,y,z
@@ -77,7 +75,7 @@
         scene.add(point2)
 
         var point3 = new THREE.PointLight(0x00ffff)
-        point3.position.set(0, 132, 0)
+        point3.position.set(300, 132, 300)
         scene.add(point3)
         // var ambientLight = new THREE.AmbientLight
         //环境光
@@ -120,7 +118,6 @@
         }
         render()
         var controls = new THREE.OrbitControls(camera, renderer.domElement)
-        // controls.addEventListener('change', render)
     </script>
 </body>
 
